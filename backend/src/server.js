@@ -1,4 +1,3 @@
-// server.js
 import { connectDB, disconnectDB } from "./config/database.js";
 import config from "./config/config.js";
 import app from "./app.js";
