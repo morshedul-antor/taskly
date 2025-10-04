@@ -13,8 +13,8 @@ const baseService = (model) => {
     return createData;
   };
 
-  const get = async (where, include, skip, limit, orderBy) => {
-    const data = await repo.get(where, include, skip, limit, orderBy);
+  const get = async (where, select, skip, limit, order) => {
+    const data = await repo.get(where, select, skip, limit, order);
 
     if (!data) {
       return [];
@@ -22,20 +22,29 @@ const baseService = (model) => {
     return data;
   };
 
-  const getById = async (id, include) => {
-    const singleData = await repo.getById(id, include);
+  const getById = async (id, select) => {
+    const singleData = await repo.getById(id, select);
 
     if (!singleData) {
-      throw notFound(`${id} not found!`);
+      throw notFound(`ID-${id} not found!`);
     }
     return singleData;
+  };
+
+  const getByKey = async (key, value, select) => {
+    const keyData = await repo.getByKey(key, value, select);
+
+    if (!keyData) {
+      throw notFound(`Not found!`);
+    }
+    return keyData;
   };
 
   const updateById = async (id, data) => {
     const updateData = await repo.updateById(id, data);
 
     if (!updateData) {
-      throw notFound(`${id} not found!`);
+      throw notFound(`ID-${id} not found!`);
     }
     return updateData;
   };
@@ -44,11 +53,11 @@ const baseService = (model) => {
     const deleteData = await repo.deleteById(id);
 
     if (!deleteData) {
-      throw notFound(`${id} not found!`);
+      throw notFound(`ID-${id} not found!`);
     }
     return {
       status: "Success",
-      message: `${id} deleted successfully`,
+      message: `ID-${id} deleted successfully`,
       statusCode: 202,
     };
   };
@@ -57,6 +66,7 @@ const baseService = (model) => {
     create,
     get,
     getById,
+    getByKey,
     updateById,
     deleteById,
   };
