@@ -45,4 +45,27 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.patch("/:id", async (req, res, next) => {
+  const { id, createdAt, ...updateData } = req.body;
+
+  try {
+    const data = await taskService.updateById(
+      Number(req.params.id),
+      updateData
+    );
+    res.accepted(data);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const data = await taskService.deleteById(Number(req.params.id));
+    res.accepted(data);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
