@@ -1,3 +1,4 @@
+import { isAuth } from "../middlewares/isAuth.js";
 import taskService from "../services/tasks.js";
 import { Router } from "express";
 
@@ -15,7 +16,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", isAuth, async (req, res, next) => {
   try {
     const data = await taskService.createTask(req.body);
     res.created(data);
@@ -24,7 +25,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.get("/tasks-with-user/", async (req, res, next) => {
+router.get("/tasks-with-user/", isAuth, async (req, res, next) => {
   const skip = req.query.skip && Number(req.query.skip);
   const limit = req.query.limit && Number(req.query.limit);
 
@@ -36,7 +37,7 @@ router.get("/tasks-with-user/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", isAuth, async (req, res, next) => {
   try {
     const data = await taskService.getById(Number(req.params.id));
     res.success(data);
@@ -45,7 +46,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id", isAuth, async (req, res, next) => {
   const { id, createdAt, ...updateData } = req.body;
 
   try {
@@ -59,7 +60,7 @@ router.patch("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", isAuth, async (req, res, next) => {
   try {
     const data = await taskService.deleteById(Number(req.params.id));
     res.accepted(data);
