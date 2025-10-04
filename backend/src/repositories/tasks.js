@@ -5,8 +5,9 @@ import baseRepo from "./base.js";
 const taskRepo = () => {
   const repo = baseRepo("task");
 
-  const tasksWithUser = async (skip = 0, limit = 10) => {
+  const tasksWithUser = async (skip = 0, limit = 10, where = {}) => {
     return await prisma.task.findMany({
+      where,
       include: {
         user: { select: userInfoOut },
       },
