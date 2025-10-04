@@ -15,7 +15,7 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const data = await userService.createUser(req.body);
+    const data = await userService.register(req.body);
     res.created(data);
   } catch (error) {
     next(error);
