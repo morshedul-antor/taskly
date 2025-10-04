@@ -8,7 +8,7 @@ const baseService = (model) => {
     const createData = await repo.create(data);
 
     if (!createData) {
-      throw serverError("Something went wrong!");
+      throw serverError("Failed to crete!");
     }
     return createData;
   };
@@ -41,19 +41,27 @@ const baseService = (model) => {
   };
 
   const updateById = async (id, data) => {
-    const updateData = await repo.updateById(id, data);
-
-    if (!updateData) {
+    const existData = await repo.getById(id);
+    if (!existData) {
       throw notFound(`ID-${id} not found!`);
+    }
+
+    const updateData = await repo.updateById(id, data);
+    if (!updateData) {
+      throw serverError("Failed to update!");
     }
     return updateData;
   };
 
   const deleteById = async (id) => {
-    const deleteData = await repo.deleteById(id);
-
-    if (!deleteData) {
+    const existData = await repo.getById(id);
+    if (!existData) {
       throw notFound(`ID-${id} not found!`);
+    }
+
+    const deleteData = await repo.deleteById(id);
+    if (!deleteData) {
+      throw serverError("Failed to delete!");
     }
     return {
       status: "Success",
