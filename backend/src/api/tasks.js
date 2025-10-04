@@ -26,11 +26,14 @@ router.post("/", isAuth, async (req, res, next) => {
 });
 
 router.get("/tasks-with-user/", isAuth, async (req, res, next) => {
-  const skip = req.query.skip && Number(req.query.skip);
-  const limit = req.query.limit && Number(req.query.limit);
+  const { skip, limit, ...query } = req.query;
 
   try {
-    const data = await taskService.tasksWithUser(skip, limit);
+    const data = await taskService.tasksWithUser(
+      Number(skip) || 0,
+      Number(limit) || 10,
+      query
+    );
     res.success(data);
   } catch (error) {
     next(error);
