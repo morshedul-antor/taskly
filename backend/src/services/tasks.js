@@ -38,8 +38,15 @@ const taskService = () => {
     return task;
   };
 
-  const tasksWithUser = async (skip, limit) => {
-    const data = await repo.tasksWithUser(skip, limit);
+  const tasksWithUser = async (skip, limit, query) => {
+    const { title, status, dueDate } = query;
+
+    const where = {};
+    if (title) where.title = { contains: title, mode: "insensitive" };
+    if (status) where.status = status;
+    if (dueDate) where.dueDate = new Date(dueDate);
+
+    const data = await repo.tasksWithUser(skip, limit, where);
 
     if (!data) {
       return [];
