@@ -58,7 +58,6 @@ const baseService = (model) => {
     return {
       status: "Success",
       message: `ID-${id} deleted successfully`,
-      statusCode: 202,
     };
   };
 
