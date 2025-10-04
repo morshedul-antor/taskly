@@ -5,25 +5,28 @@ const baseRepo = (model) => {
 
   const get = ({
     where = {},
-    include = null,
     select = null,
     skip = 0,
-    limit = 10,
-    orderBy = "desc",
+    limit = undefined,
+    order = "desc",
   } = {}) =>
     prisma[model].findMany({
       where,
-      include,
       select,
       skip,
       take: limit,
-      orderBy: { createdAt: orderBy },
+      orderBy: { createdAt: order },
     });
 
-  const getById = (id, { include = null, select = null } = {}) =>
+  const getById = (id, { select = null } = {}) =>
     prisma[model].findUnique({
       where: { id },
-      include,
+      select,
+    });
+
+  const getByKey = (key, value, { select = null } = {}) =>
+    prisma[model].findUnique({
+      where: { [key]: value },
       select,
     });
 
@@ -42,6 +45,7 @@ const baseRepo = (model) => {
     create,
     get,
     getById,
+    getByKey,
     updateById,
     deleteById,
   };
