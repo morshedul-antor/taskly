@@ -4,28 +4,27 @@ import userRepo from "../repositories/users.js";
 import baseService from "./base.js";
 
 const userService = () => {
-  const repo = userRepo();
+  const repo = userRepo;
   const service = baseService("user");
 
-  const getByEmail = async (email) => {
-    const emailData = await repo.getByEmail(email);
-
-    if (!emailData) {
-      throw notFound("User not found!");
-    }
-    return emailData;
-  };
-
   const createUser = async (data) => {
-    const { email, password, ...restData } = data;
+    const { name, email, password, ...restData } = data;
 
-    // email and password validation
+    // validation
+    if (!name) {
+      throw badRequest("Name is required!");
+    }
+    if (!email) {
+      throw badRequest("Email is required!");
+    }
+    if (!password) {
+      throw badRequest("Password is required!");
+    }
+
+    // existing email check
     const existingUser = await repo.getByEmail(email);
     if (existingUser) {
       throw badRequest("Email already exists!");
-    }
-    if (!email || !password) {
-      throw badRequest("Email and password are required!");
     }
 
     // hash password
@@ -33,6 +32,7 @@ const userService = () => {
 
     // create user
     const user = await service.create({
+      name,
       email,
       password: hashedPassword,
       ...restData,
@@ -40,35 +40,6 @@ const userService = () => {
 
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
-  };
-
-  const getUsers = async () => {
-    return await repo.get({
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        name: true,
-        email: true,
-      },
-    });
-  };
-
-  const getUserById = async (userId) => {
-    const userData = await repo.getById(userId, {
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        name: true,
-        email: true,
-      },
-    });
-
-    if (!userData) {
-      throw notFound("User not found!");
-    }
-    return userData;
   };
 
   const getByIdWithTasks = async (userId) => {
@@ -82,10 +53,7 @@ const userService = () => {
 
   return {
     ...service,
-    getByEmail,
     createUser,
-    getUsers,
-    getUserById,
     getByIdWithTasks,
   };
 };
