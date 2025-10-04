@@ -1,5 +1,6 @@
 import { badRequest, notFound } from "../error/error.js";
-import { createHash } from "../utils/security.js";
+import { createHash, validateHash } from "../utils/security.js";
+import { createToken } from "../utils/token.js";
 import userRepo from "../repositories/users.js";
 import baseService from "./base.js";
 
@@ -7,7 +8,7 @@ const userService = () => {
   const repo = userRepo;
   const service = baseService("user");
 
-  const createUser = async (data) => {
+  const register = async (data) => {
     const { name, email, password, ...restData } = data;
 
     // validation
@@ -42,6 +43,21 @@ const userService = () => {
     return userWithoutPassword;
   };
 
+  const login = async (data) => {
+    const user = await repo.getByEmail(data.email);
+    if (!user) {
+      throw notFound("Invalid username or password!");
+    }
+
+    const isMatch = await validateHash(data.password, user.password);
+    if (!isMatch) {
+      throw notFound("Invalid username or password!");
+    }
+
+    const token = await createToken(user.id);
+    return token;
+  };
+
   const getByIdWithTasks = async (userId) => {
     const userDataWithTasks = await repo.getByIdWithTasks(userId);
 
@@ -53,7 +69,8 @@ const userService = () => {
 
   return {
     ...service,
-    createUser,
+    register,
+    login,
     getByIdWithTasks,
   };
 };
