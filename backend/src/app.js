@@ -2,6 +2,7 @@ import { successHandler } from "./middlewares/successHandler.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import routerV1 from "./routers/v1.js";
 import express from "express";
+import cors from "cors";
 
 const app = express();
 
