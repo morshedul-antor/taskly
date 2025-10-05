@@ -5,11 +5,14 @@ import { Router } from "express";
 const router = Router();
 
 router.get("/", async (req, res, next) => {
-  const skip = req.query.skip && Number(req.query.skip);
-  const limit = req.query.limit && Number(req.query.limit);
+  const { skip, limit, ...query } = req.query;
 
   try {
-    const data = await taskService.get({ skip, limit });
+    const data = await taskService.tasksWithUser(
+      Number(skip) || 0,
+      Number(limit) || undefined,
+      query
+    );
     res.success(data);
   } catch (error) {
     next(error);
@@ -20,21 +23,6 @@ router.post("/", isAuth, async (req, res, next) => {
   try {
     const data = await taskService.createTask(req.body);
     res.created(data);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get("/tasks-with-user/", isAuth, async (req, res, next) => {
-  const { skip, limit, ...query } = req.query;
-
-  try {
-    const data = await taskService.tasksWithUser(
-      Number(skip) || 0,
-      Number(limit) || 10,
-      query
-    );
-    res.success(data);
   } catch (error) {
     next(error);
   }
