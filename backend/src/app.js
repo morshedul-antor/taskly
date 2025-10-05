@@ -5,6 +5,7 @@ import express from "express";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(successHandler);
