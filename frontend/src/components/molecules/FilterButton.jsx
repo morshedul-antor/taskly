@@ -24,9 +24,9 @@ const FilterButton = ({ children, active, onClick, color, count }) => {
       onClick={onClick}
       className={`inline-flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium ring-1 transition-all duration-200 hover:shadow-md ${colorClasses[color]}`}>
       <span>{children}</span>
-      <Badge color={badgeColors[color]} size="small" variant={active ? 'solid' : 'outline'}>
+      {/* <Badge color={badgeColors[color]} size="small" variant={active ? 'solid' : 'outline'}>
         {count}
-      </Badge>
+      </Badge> */}
     </button>
   )
 }
