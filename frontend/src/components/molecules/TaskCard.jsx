@@ -9,9 +9,9 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
     COMPLETED: 'green',
   }
   const priorityColors = {
-    low: 'grey',
-    medium: 'blue',
-    high: 'red',
+    LOW: 'grey',
+    MEDIUM: 'blue',
+    HIGH: 'red',
   }
 
   const formatDate = (date) => {
