@@ -46,7 +46,7 @@ Create .env file at `taskly/frontend`:
 ### .env
 
 ```
-VITE_API_URL= [http://localhost:8000/api or product api from email]
+VITE_API_URL= [http://localhost:8000/api or production api from email]
 ```
 
 Then, run this steps at `taskly/frontend`:
@@ -54,7 +54,6 @@ Then, run this steps at `taskly/frontend`:
 ```
 npm install
 npm run dev
-
 ```
 
 Access the application in your browser at `http://localhost:5173`
