@@ -14,7 +14,7 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-router.get("/auth", isAuth, async (req, res, next) => {
+router.get("/me", isAuth, async (req, res, next) => {
   try {
     const data = await userService.getById(req.user.id, { select: userOut });
     res.created(data);
