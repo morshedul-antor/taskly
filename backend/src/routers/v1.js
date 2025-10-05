@@ -5,7 +5,7 @@ import taskRouter from "../api/tasks.js";
 
 const router = Router();
 
-router.use("", authRouter);
+router.use("/auth", authRouter);
 router.use("/users", userRouter);
 router.use("/tasks", taskRouter);
 
