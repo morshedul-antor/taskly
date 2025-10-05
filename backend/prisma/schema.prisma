@@ -34,7 +34,8 @@ model Task {
  title         String
  description   String?
  status        TaskStatus @default(PENDING)
- dueDate       DateTime
+ priority      TaskPriority @default(MEDIUM)
+ dueDate       DateTime?
  assignedUser  Int
  user          User     @relation(fields: [assignedUser], references: [id], onDelete: Cascade)
 
@@ -45,4 +46,10 @@ enum TaskStatus {
  PENDING
  IN_PROGRESS
  COMPLETED
+}
+
+enum TaskPriority {
+ LOW
+ MEDIUM
+ HIGH
 }
