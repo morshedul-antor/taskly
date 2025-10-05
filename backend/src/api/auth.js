@@ -17,7 +17,7 @@ router.post("/login", async (req, res, next) => {
 router.get("/me", isAuth, async (req, res, next) => {
   try {
     const data = await userService.getById(req.user.id, { select: userOut });
-    res.created(data);
+    res.success(data);
   } catch (error) {
     next(error);
   }
