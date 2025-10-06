@@ -22,7 +22,7 @@ At first run:
 ### .env
 
 ```
-DATABASE_URL= [prisma postgres url, or used the production db from email]
+DATABASE_URL= [prisma postgres url, or production db url from email]
 PORT=8000
 ENV="dev"
 
@@ -34,6 +34,7 @@ Then, run this steps at `taskly/backend`:
 
 ```
 npm install
+npx prisma generate
 npm run dev
 ```
 
@@ -46,7 +47,7 @@ Create .env file at `taskly/frontend`:
 ### .env
 
 ```
-VITE_API_URL= [http://localhost:8000/api or production api from email]
+VITE_API_URL= [http://localhost:8000/api or production api url from email]
 ```
 
 Then, run this steps at `taskly/frontend`:
